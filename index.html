@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MONO × AI CLOSET</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Noto+Sans+JP:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div id="toast-container" class="toast-container"></div>
+
+    <header>
+        <div class="logo">MONO × AI</div>
+        <nav>
+            <button class="nav-btn active" data-target="panel-closet" data-i18n="nav_closet">クローゼット</button>
+            <button class="nav-btn" data-target="panel-styling" data-i18n="nav_styling">スタイリング</button>
+            <button class="nav-btn" data-target="panel-shop" data-i18n="nav_shop">ショップ検索</button>
+            <button class="nav-btn" data-target="panel-archive" data-i18n="nav_archive">アーカイブ</button>
+        </nav>
+        <div class="lang-switcher">
+            <button class="lang-btn active" data-lang="ja">JP</button>
+            <button class="lang-btn" data-lang="en">EN</button>
+            <button class="lang-btn" data-lang="ko">KR</button>
+            <button class="lang-btn" data-lang="zh">CN</button>
+        </div>
+    </header>
+
+    <main class="container">
+        
+        <section id="panel-closet" class="panel active">
+            <div class="panel-title-area">
+                <h2 data-i18n="closet_title">WARDROBE COLLECTION</h2>
+                <p class="closet-subtitle" data-i18n="closet_sub">あなたのクローゼットをデジタルで支配する</p>
+            </div>
+            
+            <div class="view-container">
+                <div class="form-card input-shake-target">
+                    <h3 data-i18n="add_item">アイテム追加</h3>
+                    
+                    <div class="upload-zone" id="upload-zone">
+                        <div id="upload-placeholder">
+                            <i class="fa-solid fa-cloud-arrow-up"></i>
+                            <p data-i18n="upload_text" style="font-size: 0.7rem; margin-top: 0.5rem; opacity: 0.7;">画像を読み込んでベストな服を自動判別</p>
+                        </div>
+                        <div id="upload-preview-container" class="hidden">
+                            <img id="upload-img-view" src="" alt="Preview">
+                            <div class="scan-overlay"></div>
+                        </div>
+                        <input type="file" id="item-image-file" accept="image/*" class="hidden">
+                    </div>
+
+                    <div id="color-analysis-display" class="color-analysis-box hidden">
+                        <div class="detected-title" data-i18n="best_color_coordination">BEST COLOR COORDINATION</div>
+                        <div class="color-row">
+                            <span id="detected-color-dot" class="color-dot"></span>
+                            <span id="detected-color-name" class="color-name">---</span>
+                        </div>
+                        <div class="pairing-title" data-i18n="best_color_pairings">BEST COLOR PAIRINGS</div>
+                        <div id="best-pairings-text" class="pairing-values">---</div>
+                    </div>
+
+                    <form id="item-form">
+                        <div class="input-group">
+                            <label data-i18n="item_name_label">アイテム名</label>
+                            <input type="text" id="item-name" required autocomplete="off">
+                        </div>
+                        <div class="input-group">
+                            <label data-i18n="category">カテゴリ</label>
+                            <select id="item-category">
+                                <option value="tops" data-i18n="filter_tops">トップス</option>
+                                <option value="bottoms" data-i18n="filter_bottoms">ボトムス</option>
+                                <option value="outer" data-i18n="filter_outer">アウター</option>
+                                <option value="shoes" data-i18n="filter_shoes">シューズ</option>
+                                <option value="accessories" data-i18n="filter_acc">アクセ</option>
+                            </select>
+                        </div>
+                        <div class="input-group">
+                            <label data-i18n="icon">アイコン</label>
+                            <div class="icon-selector-grid">
+                                <label class="icon-radio"><input type="radio" name="item-icon" value="fa-shirt" checked><i class="fa-solid fa-shirt"></i></label>
+                                <label class="icon-radio"><input type="radio" name="item-icon" value="fa-vest"><i class="fa-solid fa-vest"></i></label>
+                                <label class="icon-radio"><input type="radio" name="item-icon" value="fa-boot-heeled"><i class="fa-solid fa-boot-heeled"></i></label>
+                                <label class="icon-radio"><input type="radio" name="item-icon" value="fa-gem"><i class="fa-solid fa-gem"></i></label>
+                            </div>
+                        </div>
+                        <button type="submit" class="mono-btn magnetic-btn" data-i18n="btn_register">クローゼットに登録</button>
+                    </form>
+                </div>
+
+                <div class="main-dash">
+                    <div class="filter-bar">
+                        <button class="filter-btn active" data-filter="all" data-i18n="filter_all">すべて</button>
+                        <button class="filter-btn" data-filter="tops" data-i18n="filter_tops">トップス</button>
+                        <button class="filter-btn" data-filter="bottoms" data-i18n="filter_bottoms">ボトムス</button>
+                        <button class="filter-btn" data-filter="outer" data-i18n="filter_outer">アウター</button>
+                        <button class="filter-btn" data-filter="shoes" data-i18n="filter_shoes">シューズ</button>
+                        <button class="filter-btn" data-filter="accessories" data-i18n="filter_acc">アクセ</button>
+                    </div>
+                    <div class="closet-grid" id="closet-grid"></div>
+                </div>
+            </div>
+        </section>
+
+        <section id="panel-styling" class="panel">
+            <div class="panel-title-area">
+                <h2 data-i18n="nav_styling">STYLING ARCHITECTURE</h2>
+                <p class="closet-subtitle" data-i18n="ai-desc">AIスタイリストがあなたのクローゼットから極上のコーデを提案（APIキー不要）</p>
+            </div>
+
+            <div class="styling-container">
+                <div class="styling-side-panel">
+                    <h3 data-i18n="select_wardrobe">ワードローブから選択</h3>
+                    <div class="styling-selector-grid" id="styling-selector-grid"></div>
+                </div>
+
+                <div class="canvas-main-area">
+                    <div class="canvas-preview" id="canvas-preview">
+                        </div>
+
+                    <div class="ai-search-group">
+                        <h3 data-i18n="ai_search_title">AIおすすめコーデ検索</h3>
+                        <div class="ai-search-box-row">
+                            <input type="text" id="ai-search-query" data-i18n="ai_search_placeholder" placeholder="シチュエーションや気分を入力 (例: 雨の日のデート、カフェ巡り)">
+                            <button id="ai-search-btn" class="ai-action-btn"><i class="fa-solid fa-magnifying-glass"></i></button>
+                        </div>
+                    </div>
+
+                    <div class="canvas-controls-form">
+                        <div class="input-group">
+                            <label data-i18n="coord_title_label">コーディネートのタイトル</label>
+                            <input type="text" id="coord-name" autocomplete="off">
+                        </div>
+                        <button class="mono-btn" id="save-coord-btn" data-i18n="btn_save_style">このスタイルをアーカイブする</button>
+                    </div>
+
+                    <div class="ai-trigger-section">
+                        <div class="mood-selectors">
+                            <span data-i18n="select_mood">気分のムードを選択</span>: 
+                            <button class="mood-btn active" data-mood="Monochrome" data-i18n="mood_mono">モノクローム</button>
+                            <button class="mood-btn" data-mood="Minimalist" data-i18n="mood_mini">ミニマリスト</button>
+                            <button class="mood-btn" data-mood="StreetDark" data-i18n="mood_street">ストリートダーク</button>
+                            <button class="mood-btn" data-mood="Mode" data-i18n="mood_mode">モード</button>
+                        </div>
+                        <div class="ai-btn-group">
+                            <button class="ai-btn" id="ai-suggest-selected"><i class="fa-solid fa-wand-magic-sparkles"></i> <span data-i18n="ai_btn_selected">選んだ服をベースに提案</span></button>
+                            <button class="ai-btn outline" id="ai-suggest-random"><i class="fa-solid fa-shuffle"></i> <span data-i18n="ai_btn_random">全クローゼットからランダム提案</span></button>
+                        </div>
+
+                        <div id="ai-response-box" class="ai-response-box hidden">
+                            <div class="ai-loading-dots hidden">
+                                <span></span><span></span><span></span>
+                            </div>
+                            <div id="ai-text-target" class="ai-text-content"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="panel-shop" class="panel">
+            <div class="panel-title-area">
+                <h2 data-i18n="shop_title">BRAND & SHOP EXPLORER</h2>
+                <p class="closet-subtitle" data-i18n="shop_sub">憧れのブランド、ショップのディグ。服とのクロス検索</p>
+            </div>
+            
+            <div class="view-container">
+                <div class="form-card">
+                    <h3 data-i18n="search_brand">ブランド検索</h3>
+                    <div class="input-group">
+                        <label data-i18n="brand_name_label">ブランド名</label>
+                        <input type="text" id="brand-input" value="Maison Margiela" autocomplete="off">
+                    </div>
+                    <div style="display:flex; flex-direction:column; gap:1rem;">
+                        <button class="mono-btn outline" id="btn-search-maps" data-i18n="btn_maps">近くの店舗を探す (Google Maps)</button>
+                        <button class="mono-btn" id="btn-search-web" data-i18n="btn_web">ブランドの公式サイト・新作検索</button>
+                        <button class="mono-btn hidden" id="btn-cross-search" style="background:var(--accent-gold); color:#fff; border:none;"></button>
+                    </div>
+                </div>
+
+                <div class="main-dash">
+                    <h3 data-i18n="cross_search_title" style="margin-bottom:0.5rem;">ワードローブとのクロス検索</h3>
+                    <p class="closet-subtitle" data-i18n="cross_search_desc" style="margin-bottom:1.5rem;">クローゼットの服を選んで、そのブランドでの合わせを探す</p>
+                    <div class="closet-grid" id="shop-wardrobe-grid"></div>
+                </div>
+            </div>
+        </section>
+
+        <section id="panel-archive" class="panel">
+            <div class="panel-title-area">
+                <h2 data-i18n="archive_title">ARCHIVE LOOKS</h2>
+                <p class="closet-subtitle" data-i18n="archive_sub">保存された美学の記録</p>
+            </div>
+            <div class="saved-coord-grid" id="saved-coord-grid"></div>
+        </section>
+
+    </main>
+
+    <script src="app.js"></script>
+</body>
+</html>
